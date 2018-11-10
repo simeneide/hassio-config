@@ -1,0 +1,169 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Kyrkjevegen 5
+  # Location required to calculate the time the sun rises and sets
+  latitude: 61.2255604
+  longitude: 7.0982758
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 0
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Europe/Oslo
+  # Customization file
+  customize: !include customize.yaml
+
+# Enables the frontend
+frontend:
+
+#camera:
+#  - platform: mjpeg
+#    mjpeg_url: http://ec2-34-245-180-229.eu-west-1.compute.amazonaws.com:9467/simeneide/stedjebakken22.jpg
+
+# Enables configuration UI
+config:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  api_password: !secret http_password
+  base_url: eide.duckdns.org:443
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+  ssl_profile: intermediate
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some dligevices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+#Enable recording into database
+recorder:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Weather prediction
+sensor:
+  - platform: yr
+    monitored_conditions:
+     - temperature
+     - symbol
+     - precipitation
+     - cloudiness
+
+# Cloud
+cloud:
+
+python_script:
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+
+# Voice and image ffmpeg
+ffmpeg:
+
+#z-wave
+zwave:
+  usb_path: /dev/ttyACM0
+  
+influxdb:
+  host: a0d7b954-influxdb
+  port: 8086
+  database: homeassistant
+  username: !secret username
+  password: !secret http_password
+  max_retries: 3
+  default_measurement: state
+ 
+# Thermostats:
+input_number:
+  livingroom_temp:
+    name: Living Room Temperature
+    min: 16
+    max: 26
+    step: 0.5
+    mode: box
+    unit_of_measurement: C  
+    icon: mdi:target
+  office_temp:
+    name: Office Temperature
+    min: 16
+    max: 26
+    step: 0.5
+    mode: box
+    unit_of_measurement: C  
+    icon: mdi:target
+  away_temp:
+    name: Away Temperature
+    min: 16
+    max: 26
+    step: 1.0
+    mode: box
+    unit_of_measurement: C  
+    icon: mdi:target
+    
+climate:
+  - platform: generic_thermostat
+    name: Livingroom
+    heater: switch.heater_livingroom
+    target_sensor: sensor.temp_livingroom
+    target_temp: 23
+    away_temp: 15
+  - platform: generic_thermostat
+    name: Office
+    heater: switch.heater_office
+    target_sensor: sensor.temp_office
+    target_temp: 23
+    away_temp: 15
+
+### TIBBER
+tibber:
+  access_token: !secret tibber_token 
+
+### DEVICE TRACKING ###
+
+device_tracker:
+  - platform: nmap_tracker
+    hosts: 192.168.0.100-120
+    interval_seconds: 60
+  - platform: owntracks_http
+
+## IFRAMES
+
+panel_iframe:
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: https://eide.duckdns.org:3218
+  influxdb:
+    title: InfluxDB
+    icon: mdi:chart-areaspline
+    url: http://addres.to.your.hass.io:8888
+  grafana:
+    title: Grafana
+    icon: mdi:chart-timeline
+    url: https://eide.duckdns.org:3000
+  sshweb:
+    title: Terminal
+    icon: mdi:skull
+    url: https://eide.duckdns.org:7681
+    
