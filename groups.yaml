@@ -1,0 +1,12 @@
+## Light
+light_living_room:
+  name: Living Room Lights
+  entities:
+    - light.kitchen
+    - light.stue
+    
+light_hall:
+  name: Hall Lights
+  entities:
+    - light.hall1
+    - light.hall2

@@ -1,0 +1,63 @@
+- id: lightOnMotionLivingRoom
+  alias: Lights on Motion, living room
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_livingroom
+    to: 'on'
+  action:
+    service: homeassistant.turn_on
+    entity_id: group.light_living_room
+- id: lightOffMotionLivingRoom
+  alias: Lights Off on No Motion, Living Room
+  trigger:
+  - entity_id: binary_sensor.motion_livingroom
+    for: 0:40:00
+    platform: state
+    to: 'off'
+  action:
+  - entity_id: group.light_living_room
+    service: homeassistant.turn_off
+  - entity_id: group.light_hall
+    service: homeassistant.turn_off
+- id: lightOnMotionOffice
+  alias: Lights on Motion, office
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_office
+    to: 'on'
+  action:
+    service: homeassistant.turn_on
+    entity_id: light.office
+- id: lightOffMotionLivingRoom
+  alias: Lights Off on No Motion, Office
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_office
+    to: 'off'
+    for:
+      minutes: 20
+  action:
+  - service: homeassistant.turn_off
+    entity_id: light.office
+  - service: homeassistant.turn_off
+    entity_id: group.light_hall
+
+
+### THERMOSTAT REVALUATION ###
+- id: ThermostatWithGPS
+  alias: Trigger Thermostat Script
+  trigger:
+  - platform: time
+    minutes: '/15'
+    seconds: '00'
+  - entity_id: input_number.livingroom_temp
+    platform: state
+  - entity_id: input_number.office_temp
+    platform: state
+  - entity_id: device_tracker.simen_pixel
+    platform: state
+  - entity_id: device_tracker.kamilla_samsung
+    platform: state
+  action:
+  - service: python_script.thermostatwithdistance
+    
