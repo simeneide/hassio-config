@@ -92,12 +92,12 @@ for room in rooms:
     
     # Calculate distance factor:
     if room == "office":
-        dist = dist_from_home['simen_pixel']
+        dist = dist_from_home.get('simen_pixel',0)
     else:
-        dist = dist_from_home['minimum']
+        dist = dist_from_home.get('minimum',0)
     
     final_target_temp = calc_max([target_temp_away, target_temp - round(math.sqrt(dist),1) ])
-    
-    hass.states.set("climate." + room, target_temp, {"temperature" : final_target_temp})
-    logger.info("hour {}: For room {}, distance {} km, set temperture to {}".format(hour, room, dist, final_target_temp))
+    if final_target_temp is not None:
+        hass.states.set("climate." + room, target_temp, {"temperature" : final_target_temp})
+        logger.info("hour {}: For room {}, distance {} km, set temperture to {}".format(hour, room, dist, final_target_temp))
     
