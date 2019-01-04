@@ -48,8 +48,8 @@
   alias: Trigger Thermostat Script
   trigger:
   - platform: time
-    minutes: '/15'
-    seconds: '00'
+    minutes: 15
+    seconds: 00
   - entity_id: input_number.livingroom_temp
     platform: state
   - entity_id: input_number.office_temp
