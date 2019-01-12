@@ -43,6 +43,20 @@
     entity_id: group.light_hall
 
 
+### REBOOT IF NO INTERNET ###
+- id: noInternetReboot
+  alias: Reboot if no internet
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.is_hassio_online
+      from: 'On'
+      to: 'Off'
+      for:
+        minutes: 2
+  action:
+    - service: shell_command.restart_pi
+      
+
 ### THERMOSTAT REVALUATION ###
 - id: ThermostatWithGPS
   alias: Trigger Thermostat Script
