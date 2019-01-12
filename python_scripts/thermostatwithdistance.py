@@ -54,18 +54,19 @@ def distance(origin, destination):
 ###############################
 ### CALC DISTANCE FROM HOME ###
 ###############################
-
+home_pos = (61.2255604, 7.0982758)
 dist_from_home = {}
 for device_id in ['simen_pixel', 'kamilla_samsung']:
     device_state = hass.states.get('device_tracker.' + device_id)
     device_lat = device_state.attributes.get('latitude')
     device_lon = device_state.attributes.get('longitude')
-    device_pos = (device_lat, device_lon)
-    home_pos = (61.2255604, 7.0982758)
-    d = distance(device_pos, home_pos)
-    dist_from_home[device_id] = round(d,2)
+    if (device_lat is not None) & (device_lon is not None):
+        device_pos = (device_lat, device_lon)
+        d = distance(device_pos, home_pos)
+        dist_from_home[device_id] = round(d,2)
     
-dist_from_home['minimum'] = calc_min(dist_from_home.values())
+if len(dist_from_home.values()) == 2:
+    dist_from_home['minimum'] = calc_min(dist_from_home.values())
 
 # Update distance states:
 for device_id, value in dist_from_home.items():
