@@ -16,10 +16,9 @@ homeassistant:
 # Enables the frontend
 frontend:
 
-#camera:
-#  - platform: mjpeg
-#    mjpeg_url: http://ec2-34-245-180-229.eu-west-1.compute.amazonaws.com:9467/simeneide/stedjebakken22.jpg
-
+logger:
+  #default: info
+  
 # Enables configuration UI
 config:
 
@@ -68,7 +67,11 @@ sensor:
      - symbol
      - precipitation
      - cloudiness
-
+  - platform: fastdotcom
+  - platform: systemmonitor
+    resources:
+      - type: memory_free
+      - type: last_boot
 # Cloud
 cloud:
 
@@ -79,7 +82,7 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 
 # Voice and image ffmpeg
-ffmpeg:
+#ffmpeg:
 
 #z-wave
 zwave:
@@ -101,7 +104,7 @@ input_number:
     min: 16
     max: 26
     step: 0.5
-    mode: box
+    mode: slider
     unit_of_measurement: C  
     icon: mdi:target
   office_temp:
@@ -109,7 +112,7 @@ input_number:
     min: 16
     max: 26
     step: 0.5
-    mode: box
+    mode: slider
     unit_of_measurement: C  
     icon: mdi:target
   away_temp:
@@ -117,7 +120,7 @@ input_number:
     min: 16
     max: 26
     step: 1.0
-    mode: box
+    mode: slider
     unit_of_measurement: C  
     icon: mdi:target
     
@@ -139,31 +142,41 @@ climate:
 tibber:
   access_token: !secret tibber_token 
 
+### Online and reboot
+binary_sensor:
+  - platform: command_line
+    command: 'ping -c 1 8.8.8.8 | grep "1 packets received" | wc -l'
+    name: 'is_hassio_online'
+    sensor_class: connectivity
+    payload_on: 1
+    payload_off: 0
+
+shell_command:
+  restart_pi: reboot
+  
 ### DEVICE TRACKING ###
 
 device_tracker:
   - platform: nmap_tracker
     hosts: 192.168.0.100-120
     interval_seconds: 60
-  - platform: owntracks_http
-
 ## IFRAMES
 
 panel_iframe:
   configurator:
     title: Configurator
     icon: mdi:wrench
-    url: https://eide.duckdns.org:3218
+    url: https://hassio.local:3218
   influxdb:
     title: InfluxDB
     icon: mdi:chart-areaspline
-    url: http://addres.to.your.hass.io:8888
+    url: https://hassio.local:8888
   grafana:
     title: Grafana
     icon: mdi:chart-timeline
-    url: https://eide.duckdns.org:3000
+    url: https://hassio.local:3000
   sshweb:
     title: Terminal
     icon: mdi:skull
-    url: https://eide.duckdns.org:7681
+    url: https://hassio.local:7681
     
