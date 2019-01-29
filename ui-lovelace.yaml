@@ -14,18 +14,16 @@ views:
     theme: dark-mode
     #background: dark
     cards:
-      - type: sensor
-        entity: sensor.dist_minimum
-        graph: line
-
       - type: "custom:monster-card"
         card:
           type: entities
-          title: Automations
+          title: Climate
         filter:
           include: 
-            - entity_id: "automation*"
-            
+            - entity_id: "input_number*"
+            - entity_id: "climate.*"
+            - entity_id: "*yr.temp*"
+        
       - type: "custom:monster-card"
         card:
           type: entities
@@ -34,24 +32,9 @@ views:
           include: 
             - entity_id: "group.light*"
             
-      - type: "custom:monster-card"
-        card:
-          type: entities
-          title: Lights
-        filter:
-          include: 
-            - entity_id: "light*"
-
-      - type: "custom:monster-card"
-        card:
-          type: entities
-          title: Climate
-        filter:
-          include: 
-            - entity_id: "input_number*"
-            #- entity_id: "sensor.temp*"
-            - entity_id: "climate.*"
-            
+      - type: shopping-list
+        title: "Handleliste"
+        
       - type: "custom:monster-card"
         card:
           type: entities
@@ -59,6 +42,25 @@ views:
         filter:
           include: 
             - entity_id: "switch.*"
+      - type: "custom:monster-card"
+        card:
+          type: entities
+          title: Automations
+        filter:
+          include: 
+            - entity_id: "automation*"
+
+      - type: "custom:monster-card"
+        card:
+          type: entities
+          title: Lights
+        filter:
+          include: 
+            - entity_id: "light*"
+            
+      - type: sensor
+        entity: sensor.dist_minimum
+        graph: line
       - type: "custom:monster-card"
         card:
           type: entities
@@ -70,13 +72,13 @@ views:
   - title: All
     cards:
       - type: iframe
-        url: https://eide.duckdns.org:3000/d/1-SlodgRz/living-room?orgId=1
+        url: https://hassio.local:3000/d/1-SlodgRz/living-room?orgId=1
         aspect_ratio: 150%
       - type: iframe
-        url: https://eide.duckdns.org:3000/d/NjpN1wZgk/distance-from-home?orgId=1
+        url: https://hassio.local:3000/d/NjpN1wZgk/distance-from-home?orgId=1
         aspect_ratio: 50%
       - type: iframe
-        url: https://eide.duckdns.org:3000/d/6aKaRbZgk/motion?orgId=1
+        url: https://hassio.local:3000/d/6aKaRbZgk/motion?orgId=1
         aspect_ratio: 150%
 
 
