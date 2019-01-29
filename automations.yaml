@@ -56,12 +56,31 @@
   action:
     - service: shell_command.restart_pi
       
-
+- id: VentilationOFF
+  alias: Ventilation Off
+  trigger:
+  - platform: time_pattern
+    hours: 22
+    minutes: 0
+  action:
+  - service: homeassistant.turn_off
+    entity_id: switch.ventilation
+- id: VentilationON
+  alias: Ventilation On
+  trigger:
+  - platform: time_pattern
+    hours: 1
+    minutes: 0
+  action:
+  - service: homeassistant.turn_on
+    entity_id: switch.ventilation
+    
+  
 ### THERMOSTAT REVALUATION ###
 - id: ThermostatWithGPS
   alias: Trigger Thermostat Script
   trigger:
-  - platform: time
+  - platform: time_pattern
     minutes: 15
     seconds: 00
   - entity_id: input_number.livingroom_temp
