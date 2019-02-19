@@ -40,7 +40,8 @@ updater:
 
 # Discover some dligevices automatically
 discovery:
-
+  enable:
+    - homekit
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
@@ -131,12 +132,16 @@ climate:
     target_sensor: sensor.temp_livingroom
     target_temp: 23
     away_temp: 15
+    keep_alive: 480
+    precision: 0.1
   - platform: generic_thermostat
     name: Office
     heater: switch.heater_office
     target_sensor: sensor.temp_office
     target_temp: 23
     away_temp: 15
+    keep_alive: 480
+    precision: 0.1
 
 ### TIBBER
 tibber:
@@ -169,10 +174,6 @@ shopping_list:
 ## IFRAMES
 
 panel_iframe:
-  configurator:
-    title: Configurator
-    icon: mdi:wrench
-    url: https://hassio.local:3218
   influxdb:
     title: InfluxDB
     icon: mdi:chart-areaspline
@@ -181,8 +182,12 @@ panel_iframe:
     title: Grafana
     icon: mdi:chart-timeline
     url: https://hassio.local:3000
-  sshweb:
-    title: Terminal
-    icon: mdi:skull
-    url: https://hassio.local:7681
-    
+
+system_health:
+
+mqtt:
+  broker: m24.cloudmqtt.com
+  port: 27724
+  username: !secret CLOUDMQTT_USER
+  password: !secret CLOUDMQTT_PASSWORD
+  certificate: auto
