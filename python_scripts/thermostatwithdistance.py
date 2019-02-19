@@ -87,7 +87,7 @@ for room in rooms:
     
     # Get input set target temp for room:
     ### HOUR FILTER ###
-    if (hour < 22) & (hour >= 5):
+    if (hour < 22) & (hour >= 4):
         target_temp = float(hass.states.get("input_number." + sensor_name).state)
     else:
         target_temp = target_temp_away
