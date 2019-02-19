@@ -6,23 +6,107 @@ resources:
   - url: /local/monster-card.js?v=1
     type: js
     # documentation: https://github.com/ciotlosm/custom-lovelace/tree/master/monster-card
-
+  - url: /local/button-card.js
+    type: module
+    # https://community.home-assistant.io/t/lovelace-button-card/65981
 title: Home
 views:
 
   - title: Home
     theme: dark-mode
-    #background: dark
     cards:
-      - type: "custom:monster-card"
+#### LIVING ROOM
+      - type: horizontal-stack
+        cards:
+        - type: vertical-stack
+        ### LIVING ROOM
+          ### TEMP STATES
+          cards:
+          - type: gauge
+            entity: sensor.temp_livingroom
+          - type: gauge
+            name: Target
+            entity: input_number.livingroom_temp
+
+          ### BUTTONS
+          - type: horizontal-stack
+            cards:
+            - type: "custom:button-card"
+              color_type: card
+              name: Livingroom
+              icon: mdi:minus-box
+              action: service
+              service:
+                domain: input_number
+                action: decrement
+                data:
+                  entity_id: input_number.livingroom_temp
+            - type: "custom:button-card"
+              name: Livingroom
+              color_type: card
+              icon: mdi:plus-box
+              action: service
+              service:
+                domain: input_number
+                action: increment
+                data:
+                  entity_id: input_number.livingroom_temp
+        - type: vertical-stack
+        ### OFFICE
+          ### TEMP STATES
+          cards:
+          - type: gauge
+            entity: sensor.temp_office
+          - type: gauge
+            name: Target
+            entity: input_number.office_temp
+          ### BUTTONS
+          - type: horizontal-stack
+            cards:
+            - type: "custom:button-card"
+              color_type: card
+              name: Office
+              icon: mdi:minus-box
+              action: service
+              service:
+                domain: input_number
+                action: decrement
+                data:
+                  entity_id: input_number.office_temp
+            - type: "custom:button-card"
+              name: Office
+              color_type: card
+              icon: mdi:plus-box
+              action: service
+              service:
+                domain: input_number
+                action: increment
+                data:
+                  entity_id: input_number.office_temp
+
+      #### HISTORY
+      - type: "history-graph"
+        title: "Office climate"
+        entities:
+          - climate.office
+      - type: "history-graph"
+        title: "Living Room climate"
+        entities:
+          - climate.livingroom
+  ### THE REST
+      - type:  "custom:monster-card"
         card:
           type: entities
           title: Climate
         filter:
           include: 
             - entity_id: "input_number*"
-            - entity_id: "climate.*"
+            #- entity_id: "climate.*"
             - entity_id: "*yr.temp*"
+  
+  
+      - type: gauge
+        entity: sensor.fibaro_system_fgwpe_f_wall_plug_gen5_power
         
       - type: "custom:monster-card"
         card:
@@ -49,7 +133,7 @@ views:
         filter:
           include: 
             - entity_id: "automation*"
-
+  
       - type: "custom:monster-card"
         card:
           type: entities
@@ -71,18 +155,7 @@ views:
             
   - title: All
     cards:
-      - type: iframe
-        url: https://hassio.local:3000/d/1-SlodgRz/living-room?orgId=1
-        aspect_ratio: 150%
-      - type: iframe
-        url: https://hassio.local:3000/d/NjpN1wZgk/distance-from-home?orgId=1
-        aspect_ratio: 50%
-      - type: iframe
-        url: https://hassio.local:3000/d/6aKaRbZgk/motion?orgId=1
-        aspect_ratio: 150%
-
-
-        
+  
       - type: "custom:monster-card"
         card:
           type: entities
@@ -101,5 +174,13 @@ views:
             - entity_id: "*"
           exclude:
             - entity_id: "sensor.*"
-
             
+      - type: iframe
+        url: https://hassio.local:3000/d/1-SlodgRz/living-room?orgId=1
+        aspect_ratio: 150%
+      - type: iframe
+        url: https://hassio.local:3000/d/NjpN1wZgk/distance-from-home?orgId=1
+        aspect_ratio: 50%
+      - type: iframe
+        url: https://hassio.local:3000/d/6aKaRbZgk/motion?orgId=1
+        aspect_ratio: 150%
