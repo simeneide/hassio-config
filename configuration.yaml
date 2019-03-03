@@ -68,11 +68,14 @@ sensor:
      - symbol
      - precipitation
      - cloudiness
-  - platform: fastdotcom
   - platform: systemmonitor
     resources:
       - type: memory_free
       - type: last_boot
+      
+fastdotcom:
+  scan_interval:
+    minutes: 30
 # Cloud
 cloud:
 
@@ -152,7 +155,6 @@ binary_sensor:
   - platform: command_line
     command: 'ping -c 1 8.8.8.8 | grep "1 packets received" | wc -l'
     name: 'is_hassio_online'
-    sensor_class: connectivity
     payload_on: 1
     payload_off: 0
 
@@ -191,3 +193,7 @@ mqtt:
   username: !secret CLOUDMQTT_USER
   password: !secret CLOUDMQTT_PASSWORD
   certificate: auto
+  
+camera:
+- platform: mjpeg
+  mjpeg_url: http://217.17.213.66:8081/mjpg/video.mjpg?overview=0&camera=1&videoframeskipmode=empty&Axis-Orig-Sw=true&resolution=1280x720
